@@ -400,9 +400,9 @@ if __name__ == '__main__':
     # print(list_to_hex(xor(a,b)))
 
     # challenge 3
-    # print('Challenge 3')
-    # s = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
-    # xor_encoded_cipher(s)
+    print('Challenge 3')
+    s = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
+    xor_encoded_cipher(s)
 
     # challenge 4
     # print('Challenge 4')    
@@ -421,42 +421,41 @@ if __name__ == '__main__':
     # print(ans == expected_ans)
 
     #Challenge 6
-    s1 = 'this is a test'
-    s2 = 'wokka wokka!!!'
-    # print(hamming_distance_two_strings(s1.encode(), s2.encode()))    
-    with open('challenge6.txt') as f:
-        a = f.readlines()        
-    a = [base64_to_list(i) for i in a]
-    # # flattem array
-    a = list(itertools.chain(*a))
-    inds, arr = find_key_size(a)
-    key_size_options = 2 + inds[:4]
+    # s1 = 'this is a test'
+    # s2 = 'wokka wokka!!!'
+    # # print(hamming_distance_two_strings(s1.encode(), s2.encode()))    
+    # with open('challenge6.txt') as f:
+    #     a = f.readlines()        
+    # a = [base64_to_list(i) for i in a]
+    # # # flattem array
+    # a = list(itertools.chain(*a))
+    # inds, arr = find_key_size(a)
+    # key_size_options = 2 + inds[:4]
 
     
-    BIG_SOL = []
-    for key_size in key_size_options:
-        SOLN = []
-        a1 = transpose(a,key_size)
-        for cipher in a1:
-            SOLN.append(xor_encoded_cipher(cipher))
-        BIG_SOL.append(SOLN)
+    # BIG_SOL = []
+    # for key_size in key_size_options:
+    #     SOLN = []
+    #     a1 = transpose(a,key_size)
+    #     for cipher in a1:
+    #         SOLN.append(xor_encoded_cipher(cipher))
+    #     BIG_SOL.append(SOLN)
 
 
-    # Have len(BIG_SOL) number of solutions, need the best one
-    K = -1
-    s = BIG_SOL[K]
-    # Make string of them
-    word = ''
-    arr = [len(k) for k in s]
-    for i in range(99):
-        for j in range(len(s)):
-            print(j,i)
-            word += chr(s[j][i])
+    # # Have len(BIG_SOL) number of solutions, need the best one
+    # K = -1
+    # s = BIG_SOL[K]
+    # # Make string of them
+    # word = ''
+    # arr = [len(k) for k in s]
+    # for i in range(99):
+    #     for j in range(len(s)):
+    #         print(j,i)
+    #         word += chr(s[j][i])
 
-    print(word)
+    # print(word)
 
-                    
-    
+                        
     # challenge 7
     # with open('challenge7.txt') as f:
     #     a = f.readlines()        
