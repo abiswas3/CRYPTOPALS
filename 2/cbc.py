@@ -6,6 +6,15 @@ from Crypto.Cipher import AES
 from Crypto import Random
 import array
 
+AES_BLOCK_SIZE = 16
+
+def generate_AES_key(block_size=16):
+
+    return np.random.randint(0,
+                             size=AES_BLOCK_SIZE,
+                             high=255).tolist()
+
+    
 def encrypt_general_purpose_CBC(plain_text, nonce, f, block_size, key):
 
     '''
@@ -61,8 +70,14 @@ def AES_single_block(text, key, encrypt=False):
         
     return [i for i in cipher.encrypt(t)]
 
-def AES_ECB(text, key, encrypt=False):
+def AES_ECB(text,
+            key,
+            encrypt=False,
+            block_size=AES_BLOCK_SIZE):
 
+    if len(text) % block_size != 0:
+        text = pkcs7(text, block_size)
+        
     key = array.array('B', key).tobytes()
     cipher = AES.new(key, AES.MODE_ECB)    
 

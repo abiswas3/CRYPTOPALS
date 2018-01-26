@@ -211,8 +211,9 @@ def pkcs7(lst_of_bytes, block_size):
     Return padded list of bytes.
     '''
 
+    # an entire block of full padding if it's padded
     if len(lst_of_bytes) % block_size == 0:
-        return lst_of_bytes
+        return lst_of_bytes + [block_size for i in range(block_size)]
 
     diff = block_size - (len(lst_of_bytes) % block_size)
     
@@ -226,6 +227,44 @@ def make_pkcs7_padded_block_matrix(byte_arr, block_size):
     
     return [byte_arr[i*block_size:(i+1)*block_size] for i in range(len(byte_arr)//block_size)]
 
+
+def cookie_to_JSON(cookie):
+
+    #Write a k=v parsing routine, as if for a structured cookie.
+
+    if len(cookie.split('&')) > 0:
+        key_vals = [i.split('=') for i in  cookie.split('&') if len(i.split('=')) == 2]
+        return {key:val for key,val in key_vals}
+        
+    else:
+        return {}
+    
+def JSON_to_cookie(x):
+    
+    return '&'.join(['{}={}'.format(key, val) for key, val in x.items()])
+
+def profile_for(email):
+
+    if '&' in email or '=' in email:
+        return None
+
+    return {'email': email,
+            'uid': 10,
+            'role': 'user'
+    }
+
+def verify_pkcs7(padded_text):
+    
+    f = lambda s:s[-1:]*s[-1]==s[-s[-1]:]
+    
+    return f(padded_text)
+
+def strip_pkcs7(padded_text, block_size=16):
+
+    pads = block_size - padded_text[-1]
+    
+    return padded_text[: pads]
+    
 if __name__ == '__main__':
 
     # ###################################################
@@ -315,8 +354,10 @@ if __name__ == '__main__':
     # x = pkcs7(lst_of_bytes, block_size)
     # print(x)
 
-    byte_array = string_to_list("YELLOW SUBMARINEYELLOW SUBMARINEYELLOW SUBMARINE")
-    block_size = 20
-    x = make_pkcs7_padded_block_matrix(byte_array, block_size)
-    print(x)
-    pass
+    # byte_array = string_to_list("YELLOW SUBMARINEYELLOW SUBMARINEYELLOW SUBMARINE")
+    # block_size = 20
+    # x = make_pkcs7_padded_block_matrix(byte_array, block_size)
+    # print(x)
+
+    cookie = 'foo=bar&baz=qux&zap=zazzle'
+    x = cookie_to_JSON(cookie)

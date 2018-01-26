@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../')
 from utils import *
 from frequency_analysis import *
 from solvers import *
@@ -240,7 +242,8 @@ def challenge7():
 def challenge8():
 
     '''
-    This is very contrived
+    This is very contrived: re- did in this challenge 2 using 
+    hamming distance
     '''
 
     print('CHALLENGE 8')
