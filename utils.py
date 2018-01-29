@@ -14,6 +14,9 @@ That intermediate representation is a list of bytes or a python byte array:
 Same business with the way I'm writing it.
 
 '''
+def flatten_list_of_lists(a):
+
+    return [j for i in a for j in i]
 
 def string_to_list(s):
     '''Takes a human readable string and converts it to a list of bytes.
@@ -359,5 +362,6 @@ if __name__ == '__main__':
     # x = make_pkcs7_padded_block_matrix(byte_array, block_size)
     # print(x)
 
-    cookie = 'foo=bar&baz=qux&zap=zazzle'
-    x = cookie_to_JSON(cookie)
+    # cookie = 'foo=bar&baz=qux&zap=zazzle'
+    # x = cookie_to_JSON(cookie)
+    pass

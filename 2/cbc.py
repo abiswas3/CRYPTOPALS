@@ -14,7 +14,7 @@ def generate_AES_key(block_size=16):
                              size=AES_BLOCK_SIZE,
                              high=255).tolist()
 
-    
+
 def encrypt_general_purpose_CBC(plain_text, nonce, f, block_size, key):
 
     '''
@@ -30,10 +30,10 @@ def encrypt_general_purpose_CBC(plain_text, nonce, f, block_size, key):
 
     for block in blocks:
         Y_i = xor_byte_arrays(block, old_cipher)
-        c_i = f(Y_i, key, encrypt=True)        
-        encrypted_text.append(c_i)        
+        c_i = f(Y_i, key, encrypt=True)
+        encrypted_text.append(c_i)
         old_cipher = c_i
-        
+
     return encrypted_text
 
 def decrypt_general_purpose_CBC(cipher_text,
@@ -44,30 +44,31 @@ def decrypt_general_purpose_CBC(cipher_text,
 
     '''
     '''
-
     blocks = make_pkcs7_padded_block_matrix(cipher_text, block_size)
-    old_cipher = nonce
-    
+    c_prev = nonce
+
     decrypted_text = []
-    
-    for block in blocks:        
-        decrypted_text.append(xor_byte_arrays(f(block, key, encrypt=False),
-                                              old_cipher))        
-        old_cipher = block
+    for c_i in blocks:
+        #d(c_i)
+        d_c_i = f(c_i, key, encrypt=False)
         
+        decrypted_text.append(xor_byte_arrays(d_c_i, c_prev))
+        
+        c_prev = c_i
+
     return decrypted_text
 
 
 def AES_single_block(text, key, encrypt=False):
 
     key = array.array('B', key).tobytes()
-    cipher = AES.new(key)    
+    cipher = AES.new(key)
 
     t = array.array('B', text).tobytes()
-    
+
     if not encrypt:
         return [i for i in cipher.decrypt(t)]
-        
+
     return [i for i in cipher.encrypt(t)]
 
 def AES_ECB(text,
@@ -77,14 +78,14 @@ def AES_ECB(text,
 
     if len(text) % block_size != 0:
         text = pkcs7(text, block_size)
-        
-    key = array.array('B', key).tobytes()
-    cipher = AES.new(key, AES.MODE_ECB)    
 
-    t = array.array('B', text).tobytes()    
+    key = array.array('B', key).tobytes()
+    cipher = AES.new(key, AES.MODE_ECB)
+
+    t = array.array('B', text).tobytes()
     if not encrypt:
         return cipher.decrypt(t)
-        
+
     return cipher.encrypt(t)
 
 

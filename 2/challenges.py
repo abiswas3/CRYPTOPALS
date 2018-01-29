@@ -31,6 +31,7 @@ def challenge10():
     # list of bytes
     c = base64.b64decode(''.join(a)) # byte string
     nonce = [0 for i in range(14)] + [ord('&'), ord('c')]
+    
     ans = decrypt_general_purpose_CBC(c,
                                       nonce,
                                       AES_single_block,
@@ -234,9 +235,7 @@ def challenge14():
     This is the same thing as 12 but now we have to detect a random offset
     Do this last
     '''
-
     pass
-
 
 def challenge15():
 
@@ -247,7 +246,78 @@ def challenge15():
 
     print([verify_pkcs7(string_to_list(padded_text)) for padded_text in choices])
 
+def challenge16():
 
+    '''
+    CBC bit flipping attack
+    '''
+
+    # The real stuff
+    key = string_to_list('YELLOW SUBMARINE')
+    block_size = AES_BLOCK_SIZE
+
+    prefix = string_to_list("comment1=cooking%20MCs;userdata=")
+    payload = string_to_list("admin=true")
+    suffix = string_to_list(";comment2=%20like%20a%20pound%20of%20bacon")
+
+    plain_text =  prefix + payload + suffix    
+    nonce = key # no reason just too lazy to create a random one
+
+    
+    new_payload = string_to_list(escape_them_characters(list_to_string(payload)))
+    new_prefix = prefix[:]
+    new_suffix = suffix[:]
+    
+    plain_text =  new_prefix + new_payload + new_suffix    
+    c = encrypt_general_purpose_CBC(plain_text,
+                                    nonce,
+                                    AES_single_block,
+                                    AES_BLOCK_SIZE,
+                                    key)
+    
+    
+    ans = decrypt_general_purpose_CBC(flatten_list_of_lists(c),
+                                      nonce,
+                                      AES_single_block,
+                                      AES_BLOCK_SIZE,
+                                      key)
+
+
+    decoded = [list_to_string(i) for i in ans]
+    decoded = "".join(flatten_list_of_lists(decoded))
+    print('admin= as present?')
+    print('admin=' in decoded)
+    print()
+    
+    #############################################################################
+
+    # the only thing i know is that the second block is where admin? shows up
+    # infact admin? is the start of the second block- so the 5 byte of the second
+    # block is all i care about
+
+    # look at notebook for why this equation is true
+    attack_byte = ord('=') ^ ( ord('?') ^ c[1][5])
+    c[1][5] = attack_byte
+        
+    ans = decrypt_general_purpose_CBC(flatten_list_of_lists(c),
+                                      nonce,
+                                      AES_single_block,
+                                      AES_BLOCK_SIZE,
+                                      key)
+
+    decoded = [list_to_string(i) for i in ans] 
+    decoded = "".join(flatten_list_of_lists(decoded))      
+    print('admin= as present?')
+    print('admin=' in decoded)
+    print()
+        
+def escape_them_characters(new_payload):
+
+    '''
+    Replacing with a question mark
+    '''
+    return "".join([i if i !=';' and i != '=' else '?'.format(i) for i in new_payload])
+    
 if __name__ == '__main__':
 
     # print(lab)
@@ -257,5 +327,5 @@ if __name__ == '__main__':
     # challenge12()
     # challenge13()
     # challenge15()
-    
+    challenge16()    
           
