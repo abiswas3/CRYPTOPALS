@@ -23,7 +23,8 @@ def encrypt_general_purpose_CBC(plain_text, nonce, f, block_size, key):
     f: encryption function(for example AES)
     '''
 
-    blocks = make_pkcs7_padded_block_matrix(plain_text, block_size)
+    plain_text = pkcs7(plain_text, block_size)    
+    blocks = block_matrix(plain_text, block_size)
 
     old_cipher = nonce
     encrypted_text = []
@@ -43,8 +44,9 @@ def decrypt_general_purpose_CBC(cipher_text,
                                 key):
 
     '''
+    Always expect correct padding
     '''
-    blocks = make_pkcs7_padded_block_matrix(cipher_text, block_size)
+    blocks = block_matrix(cipher_text, block_size)
     c_prev = nonce
 
     decrypted_text = []
@@ -87,7 +89,6 @@ def AES_ECB(text,
         return cipher.decrypt(t)
 
     return cipher.encrypt(t)
-
 
 if __name__ == '__main__':
 

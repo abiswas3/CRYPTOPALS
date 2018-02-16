@@ -1,7 +1,17 @@
 import binascii
 import base64
 import array
+import math
 import numpy as np
+
+
+RED   = "\033[1;31m"
+BLUE  = "\033[1;34m"
+CYAN  = "\033[1;36m"
+GREEN = "\033[0;32m"
+RESET = "\033[0;0m"
+BOLD    = "\033[;1m"
+REVERSE = "\033[;7m"
 
 '''CRYPTOPALS RULE: Always operate on raw bytes, never on encoded
 strings. Only use hex and base64 for pretty-printing.
@@ -14,6 +24,10 @@ That intermediate representation is a list of bytes or a python byte array:
 Same business with the way I'm writing it.
 
 '''
+def byteString_to_list(x):
+
+    return [i for i in x]
+    
 def flatten_list_of_lists(a):
 
     return [j for i in a for j in i]
@@ -222,12 +236,8 @@ def pkcs7(lst_of_bytes, block_size):
     
     return lst_of_bytes + [ diff for i in range(diff)]
 
-def make_pkcs7_padded_block_matrix(byte_arr, block_size):
+def block_matrix(byte_arr, block_size):
 
-    # pad if need be
-    byte_arr = pkcs7(byte_arr, block_size)
-
-    
     return [byte_arr[i*block_size:(i+1)*block_size] for i in range(len(byte_arr)//block_size)]
 
 
@@ -257,6 +267,7 @@ def profile_for(email):
     }
 
 def verify_pkcs7(padded_text):
+
     
     f = lambda s:s[-1:]*s[-1]==s[-s[-1]:]
     
