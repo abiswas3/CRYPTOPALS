@@ -38,7 +38,7 @@ def compute_mac(token):
     '''
     hides the key
     '''
-    return MD4(key+token).hex_digest()
+    return MD4(key+token).digest()
 
 if __name__ == '__main__':
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
                            A=A,
                            B=B,
                            C=C,
-                           D=D).hex_digest()
+                           D=D).digest()
 
         # Now the poisoned mac i have is actually the digest you get once
         # you start with just key+token and then call digest; followed by a call to wanna inset

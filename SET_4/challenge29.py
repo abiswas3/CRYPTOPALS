@@ -80,11 +80,11 @@ if __name__ == '__main__':
         # * the token i want to insert - trivially should have access to this
         poisoned_mac = SHA1(wanna_insert,
                             mac_length=poisoned_ml,
-                            h0=int(h0,16),
-                            h1=int(h1,16),
-                            h2=int(h2,16),
-                            h3=int(h3,16),
-                            h4=int(h4,16))
+                            h0=h0,
+                            h1=h1,
+                            h2=h2,
+                            h3=h3,
+                            h4=h4)
 
 
         # Now the poisoned mac i have is actually the digest you get once

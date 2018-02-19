@@ -3,7 +3,7 @@ import base64
 import array
 import math
 import numpy as np
-
+from binascii import unhexlify, hexlify
 
 RED   = "\033[1;31m"
 BLUE  = "\033[1;34m"

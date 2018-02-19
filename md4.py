@@ -2,6 +2,7 @@ from random import randint
 from binascii import unhexlify, hexlify
 from struct import pack, unpack
 
+from utils import *
 from Crypto.Hash import MD4
 
 def left_rotate(n, b):
@@ -89,13 +90,15 @@ class MD4:
         self.D = (self.D + D) & 0xffffffff
 
     def digest(self):
-        return pack('<4I', self.A, self.B, self.C, self.D)
 
-    def hex_digest(self):
-        return hexlify(self.digest()).decode()
+        s = '%08x%08x%08x%08x' % (self.A, self.B, self.C, self.D)
+
+        return hex_to_list(s)
 
 def state_from_md4(digest):
-    return unpack('<4I', unhexlify(digest))
+    
+    return unpack('>4I', unhexlify(list_to_hex(digest)))
+    # return unpack('<4I', digest)
     
 def md_pad(message):
     """Pads the given message the same way the pre-processing of the MD4 algorithm does.
@@ -116,18 +119,16 @@ if __name__ == '__main__':
 
     # This is the same as updating the state with Hello, then updating
     # the state with world
-    message = md_pad(key + b'Hello!,') + b' world'
-    
-    digest = MD4(message).hex_digest()
-    print(digest)
+    message = md_pad(key + b'Hello!,') + b' world'    
+    digest = MD4(message).digest()
+    print(digest, len(digest), '\n')
 
     # The above shit is decomposed into the following two steps:
     
     #Now say we didn't know what the message was but we had the
     #digest: we could pull out state
     message = key + b'Hello!,'
-    digest = MD4(message).hex_digest()
-    
+    digest = MD4(message).digest()    
     a,b,c,d = state_from_md4(digest)
     
     # Now we're starting at a point where we've already done the hello
@@ -136,7 +137,7 @@ if __name__ == '__main__':
     message = b' world'
     digest = MD4(message,
                   A=a, B=b, C=c, D=d,
-                  ml=len(md_pad(key + b'Hello!,') + b' world') * 8).hex_digest()
+                  ml=len(md_pad(key + b'Hello!,') + b' world') * 8).digest()
     print(digest)
     print()
 

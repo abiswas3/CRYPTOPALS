@@ -1,6 +1,9 @@
+import sys
+sys.path.append('../')
 
 from utils import *
 import struct
+from struct import pack, unpack
 
 def SHA1(message,         
          h0 = 0x67452301,
@@ -114,12 +117,14 @@ def _SHA1(message, h0, h1, h2, h3, h4, ml, debug):
         h3 = h3 + d & 0xffffffff
         h4 = h4 + e & 0xffffffff
 
-    return hex_to_list('%08x%08x%08x%08x%08x' % (h0, h1, h2, h3, h4))
-        
+    s = '%08x%08x%08x%08x%08x' % (h0, h1, h2, h3, h4)
+    
+    return hex_to_list(s)
 
+        
 def state_from_sha1(digest):
 
-    return list_to_hex(digest[:4]), list_to_hex(digest[4:8]), list_to_hex(digest[8:12]), list_to_hex(digest[12:16]), list_to_hex(digest[16:])
+    return unpack('>5I', unhexlify(list_to_hex(digest)))
 
 
 def md_pad(m):
@@ -145,9 +150,9 @@ if __name__ == '__main__':
 
     # This is the same as updating the state with Hello, then updating
     # the state with world
-    message = key + b'Hello!,' + md_padd(key + b'Hello!,') + b' world'
+    message = md_pad(key + b'Hello!,') + b' world'
     digest = SHA1(message, debug=False)
-    print(digest)
+    print(digest, len(digest))
 
     # The above shit is decomposed into the following two steps:
     
@@ -160,18 +165,16 @@ if __name__ == '__main__':
     # Now we're starting at a point where we've already done the hello
     # bit: by imposing state; the mac_length is editted to pretend it
     # happened naturally and the input wasn't just world
-    message = b' world'
+    message = b' world'    
     digest = SHA1(message,
-                  h0=int(h0,16),
-                  h1=int(h1,16),
-                  h2=int(h2,16),
-                  h3=int(h3,16),
-                  h4=int(h4,16),
-                  mac_length=len(key + b'Hello!,'+md_padd(key + b'Hello!,') + b' world') * 8)
+                  h0=h0,
+                  h1=h1,
+                  h2=h2,
+                  h3=h3,
+                  h4=h4,
+                  mac_length=len(md_pad(key + b'Hello!,') + b' world') * 8)
+    
     print(digest)
     print()
 
     
-
-
-
