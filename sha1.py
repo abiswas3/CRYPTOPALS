@@ -122,18 +122,16 @@ def state_from_sha1(digest):
     return list_to_hex(digest[:4]), list_to_hex(digest[4:8]), list_to_hex(digest[8:12]), list_to_hex(digest[12:16]), list_to_hex(digest[16:])
 
 
-def md_padd(message):
+def md_pad(m):
     """Pads the given message the same way the pre-processing of the SHA1
     algorithm does. 
 
     Returns just the padding part not the original message
     """
-    ml = len(message) * 8
+    ml = len(m) * 8
 
-    m = b""
-    m += b'\x80'
-    
-    while ((len(message) + len(m) )*8) % 512 != 448:
+    m += b'\x80'    
+    while (len(m) *8 % 512) != 448:
         m += b'\x00'
 
     m += struct.pack('>Q', ml)

@@ -5,7 +5,7 @@ sys.path.append('../')
 from utils import *
 from cbc import *
 
-from sha1 import SHA1, md_padd, state_from_sha1
+from sha1 import SHA1, md_pad, state_from_sha1
 
 from random import randint
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         # calling sha.digest again with just wanna_insert
         # to get a final state
         # since that shit is padded; it'll roll over
-        poisoned_ml = len(b'A'*klen + token + md_padd(b'A'*klen + token) + wanna_insert) * 8
+        poisoned_ml = len(md_pad(b'A'*klen + token) + wanna_insert) * 8
 
         # What i need knowledge of :
         # * key length
@@ -96,6 +96,9 @@ if __name__ == '__main__':
         # so still presevering that the token is what it was supposed to be
 
         # I don't use he real key anywhere
-        if is_admin(token + md_padd(b'A'*klen + token) + wanna_insert,poisoned_mac):
+        message = token + md_pad(b'A'*klen + token)[len(b'A'*klen + token):] + wanna_insert
+        if is_admin(message,
+                    poisoned_mac):
+            
             print("The guess key size was :", klen)
             

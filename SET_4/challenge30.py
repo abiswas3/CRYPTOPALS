@@ -74,7 +74,7 @@ if __name__ == '__main__':
         # calling sha.digest again with just wanna_insert
         # to get a final state
         # since that shit is padded; it'll roll over
-        poisoned_ml = len(b'A'*klen + token + md_pad(b'A'*klen + token) + wanna_insert) * 8
+        poisoned_ml = len(md_pad(b'A'*klen + token) + wanna_insert) * 8
 
         # What i need knowledge of :
         # * key length
@@ -87,10 +87,6 @@ if __name__ == '__main__':
                            C=C,
                            D=D).hex_digest()
 
-        print(poisoned_mac)
-        print(BLUE)
-        print(compute_mac(token + md_pad(b'A'*klen + token) + wanna_insert))
-        print(RESET)
         # Now the poisoned mac i have is actually the digest you get once
         # you start with just key+token and then call digest; followed by a call to wanna inset
 
@@ -100,5 +96,6 @@ if __name__ == '__main__':
         # so still presevering that the token is what it was supposed to be
 
         # I don't use he real key anywhere
-        if is_admin(token + md_pad(b'A'*klen + token) + wanna_insert, poisoned_mac):
+        message = token + md_pad(b'A'*klen + token)[len(b'A'*klen + token):] + wanna_insert
+        if is_admin(message, poisoned_mac):
             print("The guess key size was :", klen)

@@ -97,13 +97,12 @@ class MD4:
 def state_from_md4(digest):
     return unpack('<4I', unhexlify(digest))
     
-def md_pad(m):
+def md_pad(message):
     """Pads the given message the same way the pre-processing of the MD4 algorithm does.
     Only return extra bit
     """
-    ml = len(m) * 8
+    ml = len(message) * 8
 
-    message = b''
     message += b'\x80'
     message += bytes((56 - len(message) % 64) % 64)
     message += pack('<Q', ml)
@@ -113,14 +112,36 @@ def md_pad(m):
 
 if __name__ == '__main__':
     
+    key = b'AACC'
 
     # This is the same as updating the state with Hello, then updating
     # the state with world
-    message =b''
-    digest = MD4(message).digest()
+    message = md_pad(key + b'Hello!,') + b' world'
+    
+    digest = MD4(message).hex_digest()
     print(digest)
 
-    m = MD4(message)
-    print(state_from_md4(m.hex_digest()))
+    # The above shit is decomposed into the following two steps:
     
+    #Now say we didn't know what the message was but we had the
+    #digest: we could pull out state
+    message = key + b'Hello!,'
+    digest = MD4(message).hex_digest()
+    
+    a,b,c,d = state_from_md4(digest)
+    
+    # Now we're starting at a point where we've already done the hello
+    # bit: by imposing state; the mac_length is editted to pretend it
+    # happened naturally and the input wasn't just world
+    message = b' world'
+    digest = MD4(message,
+                  A=a, B=b, C=c, D=d,
+                  ml=len(md_pad(key + b'Hello!,') + b' world') * 8).hex_digest()
+    print(digest)
+    print()
+
+    
+
+
+
     
