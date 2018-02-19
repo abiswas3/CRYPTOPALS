@@ -24,6 +24,10 @@ That intermediate representation is a list of bytes or a python byte array:
 Same business with the way I'm writing it.
 
 '''
+
+def bitstring_to_bytes(s):
+    return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
+
 def byteString_to_list(x):
 
     return [i for i in x]
@@ -111,6 +115,9 @@ def list_to_string(lst):
     a = [chr(x) for x in lst]
     return ''.join(a)
 
+
+def list_to_bytes(lst):
+    return bytes(lst)
 
 def list_to_base64(lst):
 

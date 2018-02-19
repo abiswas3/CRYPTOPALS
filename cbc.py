@@ -8,10 +8,10 @@ import array
 
 AES_BLOCK_SIZE = 16
 
-def generate_AES_key(block_size=16):
+def generate_AES_key(block_size=AES_BLOCK_SIZE):
 
     return np.random.randint(0,
-                             size=AES_BLOCK_SIZE,
+                             size=block_size,
                              high=255).tolist()
 
 

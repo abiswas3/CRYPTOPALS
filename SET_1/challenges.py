@@ -31,7 +31,7 @@ def challenge1():
 
     print('CHALLENGE 1')
     
-    with open('data/challenge1_input.txt') as f:
+    with open('../DATA/challenge1_input.txt') as f:
         a = f.readline().strip()
 
 
@@ -55,10 +55,10 @@ def challenge2():
     '''
 
     print('CHALLENGE 2')    
-    with open('data/challenge2_inputa.txt') as f:
+    with open('../DATA/challenge2_inputa.txt') as f:
         a = f.readline().strip()
 
-    with open('data/challenge2_inputb.txt') as f:
+    with open('../DATA/challenge2_inputb.txt') as f:
         b = f.readline().strip()
     
     x = hex_to_list(a)
@@ -90,7 +90,7 @@ def challenge3():
 
     '''
     print('CHALLENGE 3')
-    with open('data/challenge3_input.txt') as f:
+    with open('../DATA/challenge3_input.txt') as f:
         cipher_text = f.readline().strip()
 
     cipher_text = hex_to_list(cipher_text)
@@ -114,7 +114,7 @@ def challenge3():
 def challenge4():
 
     print('CHALLENGE 4')    
-    with open('data/challenge4_input.txt') as f:
+    with open('../DATA/challenge4_input.txt') as f:
         a = f.readlines()
 
     # clean up
@@ -137,7 +137,7 @@ def challenge4():
 
 def challenge5():
     print('CHALLENGE 5')    
-    with open('data/challenge5_input.txt') as f:
+    with open('../DATA/challenge5_input.txt') as f:
         plain_text = f.readlines()
 
     plain_text = [i.strip() for i in plain_text]    
@@ -175,7 +175,7 @@ def challenge6():
     Hint: key sizes in the range of 2-40
     '''
     print('CHALLENGE 6')
-    with open('data/challenge6_input.txt') as f:
+    with open('../DATA/challenge6_input.txt') as f:
         a = f.readlines()
 
     #==============FIND CORRECT KEY SIZE====================        
@@ -225,7 +225,7 @@ def challenge6():
 def challenge7():
 
     print('CHALLENGE 7')
-    with open('data/challenge7_input.txt') as f:
+    with open('../DATA/challenge7_input.txt') as f:
         a = f.readlines()
         a = [i.strip() for i in a]
         
@@ -233,11 +233,11 @@ def challenge7():
     k= b'YELLOW SUBMARINE'
     
     cipher = AES.new(k, AES.MODE_ECB)
-    p = list_to_string(cipher.decrypt(c))
+    p = cipher.decrypt(c)
 
-    print(p)
+    print(list_to_string(p))
 
-
+    return p
 
 def challenge8():
 
@@ -247,7 +247,7 @@ def challenge8():
     '''
 
     print('CHALLENGE 8')
-    with open('data/challenge8_input.txt') as f:
+    with open('../DATA/challenge8_input.txt') as f:
         a = f.readlines()
 
     a = [hex_to_list(i.strip()) for i in a]

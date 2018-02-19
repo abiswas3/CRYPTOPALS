@@ -262,13 +262,13 @@ def challenge16():
 
     plain_text =  prefix + payload + suffix    
     nonce = key # no reason just too lazy to create a random one
-
     
     new_payload = string_to_list(escape_them_characters(list_to_string(payload)))
     new_prefix = prefix[:]
     new_suffix = suffix[:]
     
-    plain_text =  new_prefix + new_payload + new_suffix    
+    plain_text =  new_prefix + new_payload + new_suffix
+    
     c = encrypt_general_purpose_CBC(plain_text,
                                     nonce,
                                     AES_single_block,
