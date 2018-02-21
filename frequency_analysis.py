@@ -12,7 +12,6 @@ function that outputs the likelihood that the plain text makes sense?
 Determine the chi-squared value for the empirical distribution
 compared to the true distribution
 '''
-
 def get_score(byte_arr):
 
     
