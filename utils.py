@@ -4,6 +4,7 @@ import array
 import math
 import numpy as np
 from binascii import unhexlify, hexlify
+import requests
 
 RED   = "\033[1;31m"
 BLUE  = "\033[1;34m"
@@ -25,6 +26,18 @@ Same business with the way I'm writing it.
 
 '''
 
+def send_to(person, msg):
+
+    response = requests.post(person, json=msg)
+    print('BLAAAAAAAAAAAAAH')
+    print(response.status_code)
+    
+    if response.status_code == 200:
+        print(GREEN, "success", RESET)
+    else:
+        print(RED, "fuck", RESET)
+
+        
 def bitstring_to_bytes(s):
     return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
 

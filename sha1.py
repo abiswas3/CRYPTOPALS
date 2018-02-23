@@ -15,7 +15,14 @@ def SHA1(message,
     
     return _SHA1(message, h0, h1, h2, h3, h4, mac_length, debug)
 
-def _SHA1(message, h0, h1, h2, h3, h4, ml, debug):
+def _SHA1(message,
+          h0,
+          h1,
+          h2,
+          h3,
+          h4,
+          ml,
+          debug):
     
     '''
     message will be list of bytes based on my API
