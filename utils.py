@@ -26,20 +26,33 @@ Same business with the way I'm writing it.
 
 '''
 
-def send_to(person, msg):
 
-    response = requests.post(person, json=msg)
-    print('BLAAAAAAAAAAAAAH')
-    print(response.status_code)
+def bytes_to_int(bytes):
     
-    if response.status_code == 200:
-        print(GREEN, "success", RESET)
-    else:
-        print(RED, "fuck", RESET)
+    result = 0
+    
+    for b in bytes:
+        result = result * 256 + int(b)
 
+    return result
+
+def int_to_bytes(value, length):
+    
+    result = []
+    for i in range(0, length):
+        result.append(value >> (i * 8) & 0xff)
+                        
+        result.reverse()
         
+    return result
+
+
 def bitstring_to_bytes(s):
     return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
+
+def list_to_byteString(x):
+
+    return bytes(x)
 
 def byteString_to_list(x):
 
