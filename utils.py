@@ -26,6 +26,52 @@ Same business with the way I'm writing it.
 
 '''
 
+def gcd(a, b):
+    """Computes the greatest common divisor between a and b using the
+    Euclidean algorithm."""
+    while b != 0:
+        a, b = b, a % b
+
+    return a
+
+
+def lcm(a, b):
+    """Computes the lowest common multiple between a and b using the GCD
+    method."""
+    return a // gcd(a, b) * b
+
+def modular_inverse(a, n):
+
+# From wikipedia
+# function inverse(a, n)
+#     t := 0;     newt := 1;
+#     r := n;     newr := a;
+#     while newr ≠ 0
+#         quotient := r div newr
+#         (t, newt) := (newt, t - quotient * newt)
+#         (r, newr) := (newr, r - quotient * newr)
+#     if r > 1 then return "a is not invertible"
+#     if t < 0 then t := t + n
+#     return t
+
+    t = 0
+    r = n
+    newt = 1
+    newr = a
+
+    while newr !=0:
+        q = r // newr
+        t, newt = newt, t - q*newt
+        r, newr = newr, r - q*newr
+
+    if r > 1 :
+        raise Exception("a is not invertible")
+
+    if t < 0:
+        return t + n
+
+    return t
+
 
 def bytes_to_int(bytes):
     
