@@ -11,6 +11,8 @@ from challenge39 import RSA, modular_inverse
 For this to work m**e has to be smaller than n1*n2...nk
 but as they set e=3
 
+REFERENCE:
+https://crypto.stanford.edu/~dabo/papers/RSA-survey.pdf
 the small exponent attack works
 '''
 # Stolen from that GEEKS for GEEKS website

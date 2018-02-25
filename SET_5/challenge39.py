@@ -6,7 +6,6 @@ from utils import *
 from cbc import *
 from sha1 import SHA1
 import math
-
                       
 class RSA(object):
 
@@ -43,9 +42,9 @@ class RSA(object):
         return pow(m, self.d, self.n)
         
 
-def int_to_bytes(n):
-    """Converts the given int n to bytes and returns them."""
-    return [i for i in n.to_bytes((n.bit_length() + 7) // 8, 'big')]
+    def int_to_bytes(self, n):
+        """Converts the given int n to bytes and returns them."""
+        return [i for i in n.to_bytes((n.bit_length() + 7) // 8, 'big')]
 
 if __name__ == '__main__':
 
@@ -56,4 +55,4 @@ if __name__ == '__main__':
     
     x = R.encrypt(msg_int)
     y = R.decrypt(x)
-    print(list_to_string(int_to_bytes(y)))
+    print(list_to_string(R.int_to_bytes(y)))
